@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>SQLite Tool</title>
+</head>
+<body>
+  <h1>SQLite DB 作成 & CSV取込</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul>
+        {% for cat,msg in messages %}
+          <li><b>{{cat}}</b>: {{msg}}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <form method="post" action="{{ url_for('start') }}" enctype="multipart/form-data">
+    <div>
+      <label>DB名</label>
+      <input name="db_name" placeholder="例: hr_master" required>
+    </div>
+    <div>
+      <label>テーブル名</label>
+      <input name="table_name" placeholder="例: staff" required>
+    </div>
+    <div>
+      <label>CSVファイル</label>
+      <input type="file" name="csv_file" accept=".csv" required>
+    </div>
+    <button type="submit">次へ（スキーマ編集）</button>
+  </form>
+</body>
+</html>

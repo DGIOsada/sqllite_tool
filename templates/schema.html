@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Schema</title>
+</head>
+<body>
+  <h1>スキーマ設定</h1>
+  <p>DB: <b>{{db_name}}</b> / Table: <b>{{table_name}}</b></p>
+
+  <form method="post" action="{{ url_for('create') }}">
+    <table border="1" cellpadding="6">
+      <tr>
+        <th>元の項目名（表示）</th>
+        <th>DBカラム名（英数字）</th>
+        <th>型</th>
+        <th>PK</th>
+        <th>NOT NULL</th>
+        <th>UNIQUE</th>
+      </tr>
+      {% for c in cols %}
+      <tr>
+        <td>
+          <input name="display_name_{{loop.index0}}" value="{{c.display_name}}" readonly>
+        </td>
+        <td>
+          <input name="column_name_{{loop.index0}}" value="{{c.column_name}}">
+        </td>
+        <td>
+          <select name="type_{{loop.index0}}">
+            {% for t in sqlite_types %}
+              <option value="{{t}}" {% if t==c.type %}selected{% endif %}>{{t}}</option>
+            {% endfor %}
+          </select>
+        </td>
+        <td><input type="checkbox" name="pk_{{loop.index0}}" {% if c.pk %}checked{% endif %}></td>
+        <td><input type="checkbox" name="not_null_{{loop.index0}}" {% if c.not_null %}checked{% endif %}></td>
+        <td><input type="checkbox" name="unique_{{loop.index0}}" {% if c.unique %}checked{% endif %}></td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <p style="margin-top:12px;">
+      <button type="submit">DB作成 & CSV取り込み</button>
+    </p>
+  </form>
+</body>
+</html>

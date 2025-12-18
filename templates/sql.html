@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>SQL Console</title>
+  <style>
+    textarea { width: 100%; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 6px; }
+    th { background: #f6f6f6; }
+    .row { display: grid; grid-template-columns: 280px 1fr; gap: 12px; align-items: start; }
+  </style>
+</head>
+<body>
+  <h1>SQL Console（SELECT専用）</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul>
+        {% for cat,msg in messages %}
+          <li><b>{{cat}}</b>: {{msg}}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <div class="row">
+    <div>
+      <h3>DB</h3>
+      <form method="get" action="{{ url_for('sql_console') }}">
+        <select name="db" onchange="this.form.submit()">
+          {% for d in dbs %}
+            <option value="{{d}}" {% if d==selected_db %}selected{% endif %}>{{d}}.db</option>
+          {% endfor %}
+        </select>
+      </form>
+
+      <h3>Tables</h3>
+      <ul>
+        {% for t in tables %}
+          <li><code>{{t}}</code></li>
+        {% endfor %}
+      </ul>
+      <p style="color:#666;">※ 実行できるのは SELECT / WITH のみ（複文禁止）</p>
+    </div>
+
+    <div>
+      <form method="post" action="{{ url_for('sql_run') }}">
+        <input type="hidden" name="db" value="{{selected_db}}">
+        <h3>SQL</h3>
+        <textarea name="sql_text" rows="10">{{sql_text}}</textarea>
+        <p>
+          <button type="submit">実行（プレビュー）</button>
+          {% if result %}
+            <a href="{{ url_for('sql_export', fmt='csv') }}">CSVエクスポート</a> /
+            <a href="{{ url_for('sql_export', fmt='tsv') }}">TSVエクスポート</a>
+          {% endif %}
+        </p>
+      </form>
+
+      {% if result %}
+        <h3>結果プレビュー（{{result.count}}行）</h3>
+        <table>
+          <tr>
+            {% for c in result.cols %}
+              <th>{{c}}</th>
+            {% endfor %}
+          </tr>
+          {% for r in result.rows %}
+            <tr>
+              {% for v in r %}
+                <td>{{v}}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </table>
+      {% endif %}
+    </div>
+
+
+<h3>Table Actions</h3>
+<form method="post" action="{{ url_for('table_action') }}">
+  <input type="hidden" name="db" value="{{ selected_db }}">
+
+  <label>対象テーブル</label>
+  <select name="table">
+    {% for t in tables %}
+      <option value="{{ t }}">{{ t }}</option>
+    {% endfor %}
+  </select>
+
+  <div style="margin-top:8px;">
+    <button name="action" value="truncate"
+            onclick="return confirm('テーブルの中身を全て削除します。よろしいですか？');">
+      中身を空にする
+    </button>
+  </div>
+
+  <div style="margin-top:8px;">
+    <label>
+      <input type="checkbox" name="confirm_drop" value="yes">
+      本当にテーブルを削除する（元に戻せません）
+    </label><br>
+    <button name="action" value="drop"
+            onclick="return confirm('テーブル自体を削除します。本当によろしいですか？');">
+      テーブル削除
+    </button>
+  </div>
+</form>
+
+
+
+
+
+
+
+  </div>
+</body>
+</html>

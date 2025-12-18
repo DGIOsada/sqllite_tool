@@ -1,0 +1,64 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# --- Virtualenv ---
+.venv/
+venv/
+ENV/
+
+# --- SQLite / data ---
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+
+# 念のため data 配下の一時ファイル
+data/*.csv
+data/*.tsv
+data/*.tmp
+
+# --- Flask ---
+instance/# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# --- Virtualenv ---
+.venv/
+venv/
+ENV/
+
+# --- SQLite / data ---
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+data/*.csv
+data/*.tsv
+data/*.tmp
+
+# --- Uploads (CSV / TSV / temp files) ---
+uploads/
+uploads/*
+
+# --- Flask ---
+instance/
+.webassets-cache
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- VS Code ---
+.vscode/
+
+.webassets-cache
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- VS Code ---
+.vscode/

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Validate</title>
+</head>
+<body>
+  <h1>型不一致の検出</h1>
+  <p>DB: <b>{{db_name}}</b> / Table: <b>{{table_name}}</b></p>
+
+  <h2>NGセル一覧（最大300件表示）</h2>
+  <table border="1" cellpadding="6">
+    <tr>
+      <th>行</th><th>列（表示名）</th><th>値</th><th>期待型</th><th>理由</th>
+    </tr>
+    {% for b in bad_cells %}
+    <tr>
+      <td>{{b.row}}</td>
+      <td>{{b.col_display}}</td>
+      <td>{{b.value}}</td>
+      <td>{{b.type}}</td>
+      <td>{{b.reason}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h2>修正（TSV）</h2>
+  <p>形式：<code>row\tcolumn\tvalue</code>（rowはCSV上の行番号、columnは元の項目名）</p>
+  <form method="post" action="{{ url_for('apply_fixes') }}">
+    <textarea name="fix_tsv" rows="16" cols="120">{{fix_tsv}}</textarea><br>
+    <button type="submit">修正をCSVに反映して戻る</button>
+  </form>
+
+  <p style="margin-top:12px;">
+    修正後、スキーマ画面に戻って再度「DB作成 & CSV取り込み」を実行してください。
+  </p>
+</body>
+</html>
