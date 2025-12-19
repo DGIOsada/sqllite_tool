@@ -29,7 +29,7 @@ SQLite + Flask で **SQL実行・JOIN・CSV/TSVエクスポート**ができる�
 ├── requirements.txt
 ├── .gitignore
 └── README.md
-
+```
 
 ## Setup
 
@@ -37,6 +37,7 @@ SQLite + Flask で **SQL実行・JOIN・CSV/TSVエクスポート**ができる�
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
+```
 
 ## Setup
 
@@ -48,16 +49,17 @@ source .venv/bin/activate
 python app.py
 
 http://127.0.0.1:5000
+```
 
 
-
+```
 SELECT *
 FROM jinji_master jm
 LEFT JOIN attendance a
   ON TRIM(CAST(a.stuff_id AS TEXT)) = TRIM(jm.stuff_id)
 LEFT JOIN floor_seat fs
   ON TRIM(jm.seat_no) = TRIM(fs.seat_id)
-
+```
 
 ---
 
@@ -67,5 +69,7 @@ LEFT JOIN floor_seat fs
 git status
 git add README.md
 git commit -m "Update README with setup and SQL example"
-git push
 
+
+git push
+```
